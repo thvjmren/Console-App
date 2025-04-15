@@ -1,4 +1,6 @@
-﻿namespace Course_Managment_Application
+﻿using Course_Managment_Application.Enums;
+
+namespace Course_Managment_Application
 {
     public class Methods
     {
@@ -10,23 +12,31 @@
             string name = Helper.GetValidatedName("enter the name of the student: ");
             string surname = Helper.GetValidatedName("enter the surname of the student: ");
 
-            string type;
-            Console.WriteLine("type must be selected as Paid or Unpaid: ");
-            do
-            {
-                Console.Write("enter the category: ");
-                type = Console.ReadLine().Trim();
+            Console.WriteLine("choose the education type:");
+            Console.WriteLine("1. Guaranteed");
+            Console.WriteLine("2. Non-Guaranteed");
 
-                if (type.ToLower() != "paid" && type.ToLower() != "unpaid")
+            EducationType selectedType;
+            while (true)
+            {
+                Console.Write("enter your choice: ");
+                string input = Console.ReadLine();
+
+                switch (input)
                 {
-                    Console.WriteLine("you only have two option (paid/unpaid)");
-                    type = null;
+                    case "1":
+                        selectedType = EducationType.Guaranteed;
+                        break;
+                    case "2":
+                        selectedType = EducationType.Nonguaranteed;
+                        break;
+                    default:
+                        Console.WriteLine("invalid choice! you only have two option");
+                        continue;
                 }
-                else
-                {
-                    type = Helper.Capitalize(type);
-                }
-            } while (type == null);
+                break;
+            }
+
 
             string groupName;
             bool isValidGroupName = false;
@@ -39,7 +49,7 @@
                     if (existingGroup.No.ToLower() == groupName.ToLower())
                     {
                         Group selectedGroup = existingGroup;
-                        Student newStudent = new Student(name, surname, selectedGroup, type);
+                        Student newStudent = new Student(name, surname, selectedGroup, selectedType);
                         bool added = existingGroup.AddStudent(newStudent);
                         students.Add(newStudent);
                         Console.WriteLine($"\nstudent {name} was successfully added to the {groupName}");
@@ -76,47 +86,52 @@
             }
             Console.WriteLine($"\ngroup name: '{groupNumber}' saved successfully\n");
 
-            string category;
-            Console.WriteLine("category must be selected as Frontend or Backend: ");
-            do
+            Console.WriteLine("choose the group category:");
+            Console.WriteLine("1. Frontend");
+            Console.WriteLine("2. Backend");
+
+            Category category;
+            while (true)
             {
-                Console.Write("enter the category: ");
-                category = Console.ReadLine().Trim();
+                Console.Write("enter your choice: ");
+                string choice = Console.ReadLine();
 
-                if (category.ToLower() != "frontend" && category.ToLower() != "backend")
+                switch (choice)
                 {
-                    Console.WriteLine("you only have two option (Frontend/Backend)");
-                    category = null;
+                    case "1":
+                        category = Category.Frontend;
+                        break;
+                    case "2":
+                        category = Category.Backend;
+                        break;
+                    default:
+                        Console.WriteLine("invalid choice! you only have two option");
+                        continue;
                 }
-                else
-                {
-                    category = Helper.Capitalize(category);
-                    Console.WriteLine($"\ncategory: '{category}' saved successfully\n");
-                }
-            } while (category == null);
+                break;
+            }
 
-            string input;
+            Console.WriteLine("Choose education type: 1. Online / 2. Offline");
             bool isOnline;
-            Console.WriteLine("you should choose the type of education (Online / Offline): ");
-            do
+            while (true)
             {
-                input = Console.ReadLine().Trim();
+                Console.Write("enter your choice: ");
+                string input = Console.ReadLine().Trim().ToLower();
 
-                if (input.ToLower() == "online")
+                switch (input)
                 {
-                    isOnline = true;
-                    break;
+                    case "1":
+                        isOnline = true;
+                        break;
+                    case "2":
+                        isOnline = false;
+                        break;
+                    default:
+                        Console.WriteLine("invalid option! you only have two option");
+                        continue;
                 }
-                else if (input.ToLower() == "offline")
-                {
-                    isOnline = false;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("you only have two choices: (Online / Offline)");
-                }
-            } while (true);
+                break;
+            }
 
             Console.WriteLine("\nall options are set, the group is now registered");
             Group newGroup = new Group(groupNumber, category, isOnline);
@@ -246,7 +261,7 @@
                 else
                 {
                     selectedGroup.No = newGroupName;
-                    Console.WriteLine($"group name successfully changed to {newGroupName}");
+                    Console.WriteLine($"\ngroup name successfully changed to {newGroupName}");
                     isValidGroupName = true;
                 }
             }

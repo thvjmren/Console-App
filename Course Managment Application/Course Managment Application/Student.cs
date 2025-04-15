@@ -1,13 +1,15 @@
-﻿namespace Course_Managment_Application
+﻿using Course_Managment_Application.Enums;
+
+namespace Course_Managment_Application
 {
     public class Student
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Type { get; set; }
+        public EducationType Type { get; set; }
         public Group Group { get; set; }
 
-        public Student(string name, string surname, Group group, string type)
+        public Student(string name, string surname, Group group, EducationType type)
         {
             Name = name;
             Surname = surname;
